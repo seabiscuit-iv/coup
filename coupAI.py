@@ -39,7 +39,7 @@ def decode(prompt, context):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a action analyzer. You are to analyze which action from a given action set a player is wishing to do. Please output a single number, the number that corresponds to the action the user wishes to do."},
+            {"role": "system", "content": "You are a action analyzer. You are to analyze which action from a given action set a player is wishing to do. Please output a single number, with no punctuation or letters at all, the number that corresponds to the action the user wishes to do."},
             {"role": "system", "content": context},      
             {"role": "user", "content": prompt},
         ]
@@ -102,7 +102,9 @@ def chooseToKill(prompt, cards, player):
         ]
     )
     print(f"Player {player}: {response.choices[0].message.content}")
+    # print(cards)
     x = decode(response.choices[0].message.content, cards)
+    # print(f"kills {x}")
     return x
 
 def exchangeCards(cardprompt, player, neq):
@@ -299,22 +301,22 @@ def challengeBlock(challenger, target, action) -> bool:
     
 def queryKill(p):
     cds = f"Your Cards: "
-    if players[p][0] != None : cds += f"0: {players[p][0]}"
-    if players[p][1] != None : cds += f"1: {players[p][1]}"
+    cds += f"\n 0: {players[p][0]}"
+    cds += f"\n 1: {players[p][1]}"
     
     if not isAlive(p): return
     # print(players[p])
     # print(f"neq: {neq}")
     kill = chooseToKill("Please choose an influence to kill", cds, p+1)
-    while(players[p][1] == None):
+    while(players[p][kill] == None):
         kill = chooseToKill("That card is already dead. Please choose another influence to kill", cds, p+1)
-    print(f"Kills: {kill}")
+    # print(f"Kills: {kill}")
     # print(kill)
     print(f"Player {p+1} chose to kill {players[p][kill]}")
     time.sleep(slptm)
     players[p][kill] = None;
     if players[p][0] == None and players[p][1] == None: 
-        coins[p] = 0
+        coins[p] = -1
         print(f"Player {p+1} is dead")
         time.sleep(slptm)
 

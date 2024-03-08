@@ -1,0 +1,3 @@
+Player 1 executes Actions.ASSASINATE on player 3 
+Player 2 declines to challenge 
+Player 3 is challenging Player 1 

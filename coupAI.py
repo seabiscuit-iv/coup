@@ -369,7 +369,7 @@ def game():
             print(f"Please select a target to perform {act} on")
             target = int(selectTarget(f"Please select a target to perform {act} on", turn+1))
 
-        while (hasTarget(act) and (not isAlive(target) or target is turn)):
+        while (hasTarget(act) and ((not isAlive(target)) or target == turn)):
             target = selectTarget(f"Player {target} is already dead or target is yourself. Please select a different target to perform {act} on", turn+1)
 
         time.sleep(slptm)
